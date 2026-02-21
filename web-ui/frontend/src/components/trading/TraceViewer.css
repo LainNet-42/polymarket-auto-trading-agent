@@ -1,0 +1,109 @@
+.trace-viewer {
+  background-color: #fafafa;
+  border-top: 1px solid #d0d0d0;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.trace-viewer-loading,
+.trace-viewer-error,
+.trace-viewer-empty {
+  padding: 12px;
+  font-size: 12px;
+  font-family: 'Courier New', monospace;
+  color: #666;
+  background-color: #fafafa;
+  border-top: 1px solid #d0d0d0;
+}
+
+.trace-viewer-error {
+  color: #ef4444;
+}
+
+.trace-message {
+  padding: 8px 12px;
+  border-bottom: 1px solid #e0e0e0;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+}
+
+.trace-message-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.trace-role {
+  font-weight: 700;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.trace-role-assistant .trace-role {
+  color: #10a37f;
+}
+
+.trace-role-user .trace-role {
+  color: #4285f4;
+}
+
+.trace-role-tool .trace-role {
+  color: #8b5cf6;
+}
+
+.trace-tool-name {
+  font-weight: 600;
+  color: #8b5cf6;
+  font-size: 11px;
+}
+
+.trace-content {
+  color: #333;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.trace-tool-input,
+.trace-tool-result {
+  margin-top: 4px;
+}
+
+.trace-label {
+  font-weight: 600;
+  color: #666;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.trace-tool-input pre,
+.trace-tool-result pre {
+  margin: 2px 0 0 0;
+  padding: 4px 8px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  font-size: 10px;
+  line-height: 1.4;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.trace-tool-result pre {
+  background-color: #f5fff5;
+  border-color: #d0e0d0;
+}
+
+.trace-viewer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.trace-viewer::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.trace-viewer::-webkit-scrollbar-thumb {
+  background: #aaa;
+  border-radius: 3px;
+}

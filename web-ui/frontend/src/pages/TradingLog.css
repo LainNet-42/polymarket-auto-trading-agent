@@ -1,0 +1,125 @@
+/* Trading Log - Full screen table */
+.tradinglog-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 56px);
+  font-family: 'Courier New', monospace;
+  background-color: #ffffff;
+}
+
+.tradinglog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  border-bottom: 2px solid var(--border-color);
+  background-color: #f9f9f9;
+  flex-shrink: 0;
+}
+
+.tradinglog-header h2 {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+  color: #000;
+}
+
+.tradinglog-count {
+  font-size: 12px;
+  color: #10a37f;
+  font-weight: 700;
+}
+
+.tradinglog-table-wrapper {
+  flex: 1;
+  overflow: auto;
+}
+
+.tradinglog-loading {
+  padding: 40px;
+  text-align: center;
+  color: #999;
+  font-size: 12px;
+}
+
+.tradinglog-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.tradinglog-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.tradinglog-table th {
+  background-color: #f5f5f5;
+  border-bottom: 2px solid var(--border-color);
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #666;
+  white-space: nowrap;
+}
+
+.tradinglog-table .th-num { width: 50px; }
+.tradinglog-table .th-date { width: 140px; }
+.tradinglog-table .th-decision { width: 300px; }
+.tradinglog-table .th-why { }
+
+.tradinglog-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e0e0e0;
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.tradinglog-table .col-num {
+  font-weight: 700;
+  color: #4285f4;
+  white-space: nowrap;
+}
+
+.tradinglog-table .col-date {
+  white-space: nowrap;
+  color: #666;
+}
+
+.tradinglog-table .col-decision {
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.tradinglog-table .col-why {
+  color: #444;
+  word-break: break-word;
+}
+
+.tradinglog-table tr.row-buy .col-decision { color: #10a37f; }
+.tradinglog-table tr.row-sell .col-decision { color: #ef4444; }
+.tradinglog-table tr.row-hold .col-decision { color: #888; }
+.tradinglog-table tr.row-init .col-decision { color: #999; font-style: italic; }
+
+.tradinglog-table tr:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tradinglog-table .th-why,
+  .tradinglog-table .col-why {
+    display: none;
+  }
+
+  .tradinglog-table .th-decision,
+  .tradinglog-table .col-decision {
+    width: auto;
+  }
+}

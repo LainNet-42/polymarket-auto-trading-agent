@@ -1,0 +1,388 @@
+.trace-page {
+  display: flex;
+  height: calc(100vh - 58px);
+  overflow: hidden;
+}
+
+/* ========== Left panel: invoke list (light) ========== */
+.trace-sidebar {
+  width: 260px;
+  min-width: 260px;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  background: #fafafa;
+}
+
+.trace-sidebar-header {
+  padding: 16px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #333;
+}
+
+.trace-sidebar-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.trace-sidebar-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.trace-sidebar-item:hover {
+  background: #f0f0f0;
+}
+
+.trace-sidebar-item.active {
+  background: #e8e8e8;
+  border-left: 3px solid #000;
+  padding-left: 13px;
+}
+
+.trace-sidebar-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.trace-sidebar-num {
+  font-weight: 600;
+  font-size: 13px;
+  color: #000;
+}
+
+.trace-sidebar-date {
+  font-size: 11px;
+  color: #888;
+}
+
+.trace-sidebar-decision {
+  font-size: 11px;
+  color: #555;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ========== Right panel: dark theme ========== */
+.trace-chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #1a1a1a;
+}
+
+.trace-chat-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1e1e1e;
+}
+
+.trace-chat-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+.trace-chat-meta {
+  font-size: 11px;
+  color: #666;
+}
+
+.trace-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+  position: relative;
+  background-color: #1a1a1a;
+  background-image: radial-gradient(circle, #2a2a2a 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Center radial glow overlay */
+.trace-chat-messages::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 260px;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center,
+    rgba(26,26,26,1) 0%,
+    rgba(26,26,26,0.95) 20%,
+    rgba(26,26,26,0.7) 40%,
+    rgba(26,26,26,0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.trace-chat-messages > * {
+  position: relative;
+  z-index: 1;
+}
+
+.trace-chat-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #555;
+  font-size: 14px;
+}
+
+.trace-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #555;
+  font-size: 14px;
+}
+
+/* ========== System message ========== */
+.trace-system {
+  padding: 4px 0;
+  font-size: 11px;
+  color: #444;
+  user-select: none;
+}
+
+/* ========== Tool block ========== */
+.trace-tool {
+  margin: 8px 0;
+}
+
+.trace-tool-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+  background: rgba(255,255,255,0.04);
+}
+
+.trace-tool-header:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+/* Status dot */
+.trace-tool-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.trace-tool-dot.success {
+  background: #3fb950;
+  box-shadow: 0 0 4px rgba(63,185,80,0.4);
+}
+
+.trace-tool-dot.error {
+  background: #f85149;
+  box-shadow: 0 0 4px rgba(248,81,73,0.4);
+}
+
+.trace-tool-name {
+  font-weight: 600;
+  color: #c9d1d9;
+  font-family: 'SF Mono', 'Consolas', 'Monaco', monospace;
+  font-size: 12px;
+}
+
+.trace-tool-args {
+  color: #666;
+  font-size: 12px;
+  word-break: break-all;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trace-tool-arrow {
+  color: #555;
+  font-size: 14px;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.trace-tool-arrow.open {
+  transform: rotate(180deg);
+}
+
+/* Tool result (collapsed by default) */
+.trace-tool-result {
+  margin-left: 26px;
+  margin-top: 4px;
+  padding: 8px 12px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 4px;
+  border-left: 2px solid #333;
+}
+
+.trace-tool-result-text {
+  font-size: 11px;
+  color: #777;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: 'SF Mono', 'Consolas', 'Monaco', monospace;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* ========== Agent text (markdown) ========== */
+.trace-agent {
+  margin: 14px 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #d0d0d0;
+}
+
+.trace-agent h1, .trace-agent h2, .trace-agent h3, .trace-agent h4 {
+  margin: 12px 0 6px;
+  color: #fff;
+}
+
+.trace-agent h2 { font-size: 16px; }
+.trace-agent h3 { font-size: 15px; }
+.trace-agent h4 { font-size: 14px; }
+
+.trace-agent strong {
+  font-weight: 700;
+  color: #e8e8e8;
+}
+
+.trace-agent em {
+  color: #bbb;
+}
+
+.trace-agent ul, .trace-agent ol {
+  margin: 4px 0;
+  padding-left: 24px;
+}
+
+.trace-agent li {
+  margin: 2px 0;
+}
+
+.trace-agent hr {
+  border: none;
+  border-top: 1px solid #333;
+  margin: 12px 0;
+}
+
+.trace-agent table {
+  border-collapse: collapse;
+  margin: 8px 0;
+  font-size: 12px;
+  width: 100%;
+}
+
+.trace-agent th, .trace-agent td {
+  border: 1px solid #444;
+  padding: 4px 8px;
+  text-align: left;
+  color: #c0c0c0;
+}
+
+.trace-agent th {
+  background: #2a2a2a;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+.trace-agent pre {
+  background: #2a2a2a;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  overflow-x: auto;
+  margin: 6px 0;
+  color: #c0c0c0;
+}
+
+.trace-agent code {
+  background: #2a2a2a;
+  padding: 1px 4px;
+  border-radius: 2px;
+  font-size: 12px;
+  color: #c0c0c0;
+}
+
+.trace-agent pre code {
+  background: none;
+  padding: 0;
+}
+
+.trace-agent a {
+  color: #58a6ff;
+}
+
+/* ========== Final result block ========== */
+.trace-result {
+  margin: 20px 0;
+  padding: 16px;
+  background: #1e2e1e;
+  border: 1px solid #2d5a2d;
+  border-radius: 6px;
+}
+
+.trace-result-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #4caf50;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 768px) {
+  .trace-page {
+    flex-direction: column;
+  }
+
+  .trace-sidebar {
+    width: 100%;
+    min-width: 100%;
+    height: 180px;
+    min-height: 180px;
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .trace-chat-messages {
+    padding: 12px;
+  }
+
+  .trace-chat-messages::before {
+    left: 0;
+  }
+
+  .trace-bubble {
+    max-width: 95%;
+    font-size: 11px;
+  }
+
+  .trace-result {
+    padding: 10px;
+  }
+}

@@ -1,0 +1,175 @@
+.navbar {
+  background-color: #ffffff;
+  border-bottom: 2px solid #000000;
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
+  padding: 0 16px;
+  width: 100%;
+}
+
+/* Logo */
+.navbar-logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.logo-text {
+  display: flex;
+  align-items: baseline;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.logo-alpha {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000000;
+  letter-spacing: -0.5px;
+}
+
+.logo-arena {
+  font-size: 14px;
+  font-weight: 400;
+  color: #000000;
+  margin-left: 2px;
+}
+
+/* Center Menu */
+.navbar-menu-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  list-style: none;
+  gap: 24px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-menu-center li {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-menu-center li.separator {
+  color: #000000;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.navbar-menu-center li a {
+  color: #000000;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  transition: color 0.2s;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.navbar-menu-center li a:hover {
+  color: #10a37f;
+}
+
+.nav-active {
+  color: #10a37f;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Live indicator dot */
+.live-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10a37f;
+  animation: pulse-dot 2s ease-in-out infinite;
+  vertical-align: middle;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Right Side */
+.navbar-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.navbar-link {
+  color: #000000;
+  text-decoration: underline;
+  font-size: 10px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.navbar-link:hover {
+  color: #10a37f;
+}
+
+.external-icon {
+  width: 12px;
+  height: 12px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar-container {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 8px 16px;
+  }
+
+  .navbar-menu-center {
+    position: static;
+    transform: none;
+    width: 100%;
+    justify-content: center;
+    order: 3;
+    margin-top: 8px;
+    gap: 12px;
+  }
+
+  .navbar-menu-center li a {
+    font-size: 10px;
+  }
+
+  .navbar-right {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .navbar-link {
+    font-size: 8px;
+  }
+
+  .logo-alpha {
+    font-size: 16px;
+  }
+
+  .logo-arena {
+    font-size: 12px;
+  }
+}

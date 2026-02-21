@@ -1,0 +1,36 @@
+# Environment
+.env
+.env.local
+.env.cma
+.env.production
+.env.development
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Workspace data (auto-created on first run, contains trading history)
+workspace*/
+
+# Node
+web-ui/frontend/node_modules/
+web-ui/frontend/dist/
+
+# Data (large files, generated at runtime)
+data/
+
+# OS
+.DS_Store
+Thumbs.db
+nul
+NUL
