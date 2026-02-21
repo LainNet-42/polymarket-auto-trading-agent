@@ -340,7 +340,7 @@ This software is for educational and research purposes. Trading on prediction ma
 
 ## Acknowledgements
 
-- Dashboard UI inspired by [open-nof1.ai](https://github.com/195440/nof1.ai)
+- Dashboard UI inspired by [coke-nof1](https://github.com/cokepoppy/coke-nof1)
 
 ## License
 
