@@ -338,6 +338,10 @@ web-ui/          React + FastAPI monitoring dashboard
 
 This software is for educational and research purposes. Trading on prediction markets involves real financial risk. Use at your own risk. The authors are not responsible for any financial losses.
 
+## Acknowledgements
+
+- Dashboard UI inspired by [open-nof1.ai](https://github.com/195440/nof1.ai)
+
 ## License
 
 [MIT](LICENSE)
