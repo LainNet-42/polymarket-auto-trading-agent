@@ -128,6 +128,12 @@ Your wallet needs two tokens on the **Polygon** network:
 | **POL** | Gas fees (~0.01-0.30 POL/tx) | ~5 POL (~$0.50) | Buy on any exchange (Binance, Coinbase...), withdraw to Polygon |
 | **USDC** | Trading capital | Any amount | Send USDC to your Polygon address from an exchange |
 
+> **IMPORTANT: Choose the correct network when withdrawing!**
+> - You MUST select **Polygon network** when withdrawing from your exchange
+> - Do NOT select "Ethereum (ERC-20)" - funds sent via Ethereum mainnet will not work
+> - Not all exchanges support Polygon withdrawals. Coinbase, Binance, Kraken, and OKX do. Some smaller exchanges only support Ethereum
+> - If your exchange doesn't support Polygon, you'll need to use a bridge (costs ETH gas) or use a different exchange
+
 **Notes:**
 - You can send either **native USDC** or **USDC.e** -- the agent auto-swaps native USDC to USDC.e on every startup via Uniswap V3
 - Polymarket's CLOB only accepts USDC.e (bridged USDC) for trading
@@ -153,8 +159,10 @@ EOA_ADDRESS=0x_your_address
 ### Step 5: Register MCP Server
 
 ```bash
-claude mcp add polymarket python -m mcp_server.server
+claude mcp add polymarket -- python -m mcp_server.server
 ```
+
+> **Note**: The `--` is required to separate Claude CLI options from the Python command arguments.
 
 This gives Claude the Polymarket trading tools.
 
@@ -171,10 +179,12 @@ Hooks run automatically on each agent session:
 ### Step 7: One-Time Wallet Approval
 
 ```bash
-python scripts/set_allowances.py
+PYTHONPATH=. python scripts/set_allowances.py
 ```
 
-This sends ~6 transactions to approve Polymarket's exchange contracts to move your USDC.e and conditional tokens. Only needed once per wallet.
+> **Note**: The `PYTHONPATH=.` is required so Python can find the local `config` module.
+
+This sends ~6 transactions to approve Polymarket's exchange contracts to move your USDC.e and conditional tokens. Only needed once per wallet. Requires ~1-2 POL for gas.
 
 ### Step 8: Run
 
