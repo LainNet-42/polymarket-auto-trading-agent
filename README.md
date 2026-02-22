@@ -81,14 +81,43 @@ Inspired by [Steins;Gate's D-mail](https://steins-gate.fandom.com/wiki/D-Mail) c
 
 ### Prerequisites
 
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) installed and logged in
 - Python 3.11+
-- Node.js 18+ (for dashboard, optional)
+- Node.js 18+ (for Claude Code CLI install and optional dashboard)
+
+### Setup
 
 ```bash
-npm install -g @anthropic-ai/claude-code
+npm install -g @anthropic-ai/claude-code  # skip if already installed
 claude login
+
+git clone https://github.com/LainNet-42/polymarket-auto-trading-agent.git
+cd polymarket-auto-trading-agent
+python setup.py
 ```
+
+The setup script handles everything: virtual environment, dependencies, wallet generation (or import your own key), `.env`, MCP server registration, and hooks. Works on Mac, Linux, and Windows.
+
+After setup, fund your wallet with **POL** (gas) + **USDC** (capital) on the **Polygon network**, then:
+
+```bash
+python setup.py --approve          # one-time wallet authorization (~6 tx)
+python -m agent.scheduler          # start trading (continuous)
+python -m agent.scheduler --once   # or single run
+```
+
+> **Funding tips:** Send ~5 POL (~$0.50) for gas + any amount of USDC. You MUST select **Polygon network** when withdrawing from your exchange (not Ethereum). Coinbase, Binance, Kraken, and OKX support Polygon. The agent auto-swaps native USDC to USDC.e on startup.
+
+### Withdraw
+
+Set `WITHDRAW_DESTINATION` in `.env`, then:
+
+```bash
+PYTHONPATH=. python scripts/withdraw.py status          # check balances
+PYTHONPATH=. python scripts/withdraw.py send --amount 50 # withdraw $50 USDC.e
+```
+
+<details>
+<summary><strong>Manual setup (step by step)</strong></summary>
 
 ### Step 1: Clone & Install
 
@@ -96,16 +125,14 @@ claude login
 git clone https://github.com/LainNet-42/polymarket-auto-trading-agent.git
 cd polymarket-auto-trading-agent
 
-# Recommended: use a virtual environment
 python3 -m venv .venv
 source .venv/bin/activate  # Linux/Mac
 # .venv\Scripts\activate   # Windows
 
-pip install -e .
+pip install -e ".[trading]"
 ```
 
 > **Note**: On Mac/Linux use `python3`. On Windows or inside a virtualenv, `python` works.
-> All commands below use `python` assuming you're in a virtualenv.
 
 ### Step 2: Create a Wallet
 
@@ -113,7 +140,6 @@ You need a standard Ethereum wallet (EOA) on Polygon. **No Polymarket account re
 
 **Option A**: Generate with Python:
 ```bash
-pip install eth-account
 python -c "from eth_account import Account; a=Account.create(); print(f'Address: {a.address}\nPrivate Key: {a.key.hex()}')"
 ```
 
@@ -154,7 +180,7 @@ POLYGON_WALLET_PRIVATE_KEY=0x_your_private_key
 EOA_ADDRESS=0x_your_address
 ```
 
- API credentials are auto-derived from your private key.
+API credentials are auto-derived from your private key.
 
 ### Step 5: Register MCP Server
 
@@ -198,6 +224,8 @@ python -m agent.scheduler
 # Or use the shell script
 ./start_agent.sh
 ```
+
+</details>
 
 ---
 
@@ -334,13 +362,10 @@ web-ui/          React + FastAPI monitoring dashboard
 ### Setup Checklist
 
 - [ ] **Dependencies** -- Python 3.11+, Claude Code installed and authenticated (`claude login`)
-- [ ] **Wallet created** -- EOA wallet on Polygon (generate via `eth_account` or use existing)
-- [ ] **Funds deposited** -- POL for gas (~5 POL) + USDC for trading capital, both on **Polygon network**
-- [ ] **User acknowledges risk** -- Private keys grant full control of wallet funds. Trading involves real financial risk. **Confirm with your user that they understand this before writing any keys to `.env`.**
-- [ ] **`.env` configured** -- `POLYGON_WALLET_PRIVATE_KEY` and `EOA_ADDRESS` set
-- [ ] **MCP server registered** -- `claude mcp add polymarket python -m mcp_server.server`
-- [ ] **Hooks enabled** -- `cp .claude/settings.local.json.example .claude/settings.local.json`
-- [ ] **Allowances set** -- `python scripts/set_allowances.py` (one-time, requires gas)
+- [ ] **User acknowledges risk** -- Private keys grant full control of wallet funds. Trading involves real financial risk. **Confirm with your user that they understand this before proceeding.**
+- [ ] **Run setup** -- `python setup.py` (creates venv, wallet, .env, MCP, hooks)
+- [ ] **Fund wallet** -- POL for gas (~5 POL) + USDC for trading capital, both on **Polygon network**
+- [ ] **Approve wallet** -- `python setup.py --approve` (one-time, requires gas)
 
 ---
 
