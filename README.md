@@ -350,4 +350,4 @@ This software is for educational and research purposes. Trading on prediction ma
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=LainNet-42/polymarket-auto-trading-agent&type=Date)](https://star-history.com/#LainNet-42/polymarket-auto-trading-agent&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=LainNet-42/polymarket-auto-trading-agent&type=date&legend=top-left)](https://www.star-history.com/#LainNet-42/polymarket-auto-trading-agent&type=date&legend=top-left)
