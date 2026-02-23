@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python hooks/session_start.py"
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && python hooks/session_start.py"
           }
         ]
       }
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python hooks/post_tool_use.py"
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && python hooks/post_tool_use.py"
           }
         ]
       }
