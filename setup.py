@@ -368,7 +368,7 @@ def _check_pol_balance():
             str(VENV_PYTHON), "-c",
             f"""
 from web3 import Web3
-w3 = Web3(Web3.HTTPProvider('https://polygon-rpc.com'))
+w3 = Web3(Web3.HTTPProvider('https://polygon-bor-rpc.publicnode.com'))
 balance = w3.eth.get_balance('{address}')
 print(float(w3.from_wei(balance, 'ether')))
 """,
