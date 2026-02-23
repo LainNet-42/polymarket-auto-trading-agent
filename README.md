@@ -368,9 +368,19 @@ web-ui/          React + FastAPI monitoring dashboard
 
 > **A:** This is normal. The agent only trades high-certainty markets (90%+ probability) expiring within 48 hours. If no markets meet these criteria, it will hibernate and check again later. Adjust thresholds in `config/risk.py` or strategy in `agent/prompts.py`.
 
-**Q: Dashboard shows "connection refused"**
+**Q: Dashboard shows "connection refused" or blank page**
 
 > **A:** Make sure the backend is running: `uvicorn main:app --host 0.0.0.0 --port 8080` (from `web-ui/backend-py/`). Check that `VITE_API_URL` in `web-ui/frontend/.env` points to the correct backend URL. If running behind a proxy, set `NO_PROXY=localhost` to prevent proxy interference.
+>
+> If the page is blank but the server seems running, the process might be suspended (you may have pressed Ctrl+Z). Check with `ps aux | grep uvicorn` -- if status shows "T", kill the process (`kill -9 <PID>`) and restart.
+
+**Q: `ModuleNotFoundError: No module named 'py_clob_client'`**
+
+> **A:** The trading dependencies are optional. Install them with: `pip install -e ".[trading]"` or `pip install py-clob-client`. This is required for the MCP server to place orders.
+
+**Q: `tsc: command not found` when building frontend**
+
+> **A:** Run `npm install` first to install TypeScript and other dependencies, then `npm run build`.
 
 **Q: How does authentication work?**
 
