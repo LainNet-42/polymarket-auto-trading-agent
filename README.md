@@ -317,6 +317,10 @@ web-ui/          React + FastAPI monitoring dashboard
 
 ## Troubleshooting / FAQ
 
+**Q: I followed all steps but transactions fail or the API returns 403**
+
+> **A:** Polymarket restricts access from certain regions. Check the [official geographic restrictions](https://docs.polymarket.com/polymarket-learn/FAQ/geoblocking) to see if your country is affected.
+
 **Q: "Transaction failed" or "nonce too low"**
 
 > **A:** This usually means a previous transaction is still pending. Wait a few seconds and retry. The agent handles nonce issues automatically on subsequent runs.

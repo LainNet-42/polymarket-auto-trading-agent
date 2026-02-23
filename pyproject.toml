@@ -12,6 +12,8 @@ dependencies = [
 [project.optional-dependencies]
 trading = [
     "py-clob-client>=0.1.0",
+    "web3>=6.0.0",
+    "eth-account>=0.10.0",
 ]
 
 [project.scripts]

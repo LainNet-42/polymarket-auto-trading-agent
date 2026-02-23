@@ -5,6 +5,7 @@ Usage:
     python setup.py             # Full setup (venv, wallet, .env, MCP, hooks)
     python setup.py --approve   # Set wallet allowances (after funding)
     python setup.py --status    # Check current setup status
+    python setup.py --test      # Verify everything works
 """
 
 import getpass
@@ -355,6 +356,31 @@ def setup_hooks():
 # --approve: Set wallet allowances
 # ---------------------------------------------------------------------------
 
+def _check_pol_balance():
+    """Check POL balance before running approve. Returns balance as float."""
+    env = _read_env()
+    address = env.get("EOA_ADDRESS", "")
+    if not address:
+        return 0.0
+
+    result = _run(
+        [
+            str(VENV_PYTHON), "-c",
+            f"from web3 import Web3; "
+            f"from config.paths import POLYGON_RPC_URL; "
+            f"w3 = Web3(Web3.HTTPProvider(POLYGON_RPC_URL)); "
+            f"print(float(w3.from_wei(w3.eth.get_balance('{address}'), 'ether')))",
+        ],
+        capture=True,
+        check=False,
+        env={**os.environ, "PYTHONPATH": str(ROOT), "PYTHONIOENCODING": "utf-8"},
+    )
+    try:
+        return float(result.stdout.strip())
+    except (ValueError, AttributeError):
+        return 0.0
+
+
 def run_approve():
     print("\n" + "=" * 60)
     print("  Setting wallet allowances (one-time)")
@@ -367,6 +393,18 @@ def run_approve():
     env = _read_env()
     if not env.get("POLYGON_WALLET_PRIVATE_KEY") or env["POLYGON_WALLET_PRIVATE_KEY"].startswith("0x_your"):
         _fail("Wallet not configured in .env. Run 'python setup.py' first.")
+        sys.exit(1)
+
+    # Check POL balance before proceeding
+    print("\n  Checking POL balance...")
+    pol_balance = _check_pol_balance()
+    print(f"  POL balance: {pol_balance:.4f}")
+
+    if pol_balance < 0.1:
+        _fail(f"Insufficient POL for gas. Need ~1-2 POL, have {pol_balance:.4f}")
+        print(f"\n  Fund your wallet with POL on Polygon network:")
+        print(f"  Address: {env.get('EOA_ADDRESS', '???')}")
+        print(f"  Required: ~2 POL (~$1)")
         sys.exit(1)
 
     script = ROOT / "scripts" / "set_allowances.py"
@@ -416,6 +454,83 @@ def show_status():
 
 
 # ---------------------------------------------------------------------------
+# --test: Verify setup works
+# ---------------------------------------------------------------------------
+
+def run_test():
+    print("\n" + "=" * 60)
+    print("  Testing setup")
+    print("=" * 60)
+
+    errors = []
+    test_python = str(VENV_PYTHON) if VENV_PYTHON.exists() else sys.executable
+
+    # Test 1: Check .env
+    print("\n  [1/4] Checking .env...")
+    if not ENV_FILE.exists():
+        errors.append(".env not found")
+        _fail(".env not found")
+    else:
+        env = _read_env()
+        if not env.get("EOA_ADDRESS") or env["EOA_ADDRESS"].startswith("0x_your"):
+            errors.append("Wallet not configured in .env")
+            _fail("Wallet not configured")
+        else:
+            _ok(f"Wallet: {env['EOA_ADDRESS'][:16]}...")
+
+    # Test 2: Check MCP server can start
+    print("\n  [2/4] Testing MCP server...")
+    result = _run(
+        [test_python, "-c", "from mcp_server.server import app; print('MCP OK')"],
+        capture=True,
+        check=False,
+        env={**os.environ, "PYTHONPATH": str(ROOT), "PYTHONIOENCODING": "utf-8"},
+    )
+    if result.returncode != 0:
+        errors.append("MCP server import failed")
+        _fail(f"MCP import failed: {result.stderr.strip()[:100]}")
+    else:
+        _ok("MCP server module loads")
+
+    # Test 3: Check balance tool
+    print("\n  [3/4] Testing get_balance tool...")
+    result = _run(
+        [
+            test_python, "-c",
+            "from mcp_server.tools.trading_tools import get_balance; print(get_balance())",
+        ],
+        capture=True,
+        check=False,
+        env={**os.environ, "PYTHONPATH": str(ROOT), "PYTHONIOENCODING": "utf-8"},
+        timeout=30,
+    )
+    if result.returncode != 0:
+        errors.append("get_balance failed")
+        _fail(f"get_balance failed: {result.stderr.strip()[:100]}")
+    else:
+        _ok("Balance check works")
+
+    # Test 4: Check hooks file
+    print("\n  [4/4] Checking hooks...")
+    if not HOOKS_DST.exists():
+        errors.append("Hooks not configured")
+        _fail("settings.local.json not found")
+    else:
+        _ok("Hooks file exists")
+
+    # Summary
+    print("\n" + "-" * 40)
+    if errors:
+        print(f"  FAILED: {len(errors)} error(s)")
+        for e in errors:
+            print(f"    - {e}")
+        sys.exit(1)
+    else:
+        print("  All tests passed!")
+        print("\n  Ready to run: python -m agent.scheduler --once")
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -430,6 +545,10 @@ def main():
 
     if "--status" in sys.argv:
         show_status()
+        return
+
+    if "--test" in sys.argv:
+        run_test()
         return
 
     # Full setup
