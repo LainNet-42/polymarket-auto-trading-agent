@@ -1,5 +1,6 @@
 # Environment
 .env
+.mcp.json
 .env.local
 .env.cma
 .env.production

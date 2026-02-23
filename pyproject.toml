@@ -18,6 +18,9 @@ trading = [
 polymarket-mcp = "mcp_server.server:main"
 polymarket-agent = "agent.main:main"
 
+[tool.hatch.build.targets.wheel]
+packages = ["agent", "mcp_server", "polymarket", "config", "hooks"]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
