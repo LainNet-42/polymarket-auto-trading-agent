@@ -366,10 +366,12 @@ def _check_pol_balance():
     result = _run(
         [
             str(VENV_PYTHON), "-c",
-            f"from web3 import Web3; "
-            f"from config.paths import POLYGON_RPC_URL; "
-            f"w3 = Web3(Web3.HTTPProvider(POLYGON_RPC_URL)); "
-            f"print(float(w3.from_wei(w3.eth.get_balance('{address}'), 'ether')))",
+            f"""
+from web3 import Web3
+w3 = Web3(Web3.HTTPProvider('https://polygon-bor-rpc.publicnode.com'))
+balance = w3.eth.get_balance('{address}')
+print(float(w3.from_wei(balance, 'ether')))
+""",
         ],
         capture=True,
         check=False,
@@ -463,6 +465,8 @@ def run_test():
     print("=" * 60)
 
     errors = []
+
+    # Use venv python if available, otherwise system python
     test_python = str(VENV_PYTHON) if VENV_PYTHON.exists() else sys.executable
 
     # Test 1: Check .env
@@ -508,7 +512,16 @@ def run_test():
         errors.append("get_balance failed")
         _fail(f"get_balance failed: {result.stderr.strip()[:100]}")
     else:
-        _ok("Balance check works")
+        _ok(f"Balance check works")
+        # Parse and show balance
+        try:
+            import json as json_mod
+            data = json_mod.loads(result.stdout.strip())
+            pol = data.get("pol", 0)
+            usdc = data.get("polymarket_usdc_e", 0) + data.get("native_usdc", 0)
+            print(f"       POL: {pol:.4f}, USDC: ${usdc:.2f}")
+        except Exception:
+            print(f"       {result.stdout.strip()[:80]}")
 
     # Test 4: Check hooks file
     print("\n  [4/4] Checking hooks...")
