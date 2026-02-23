@@ -261,12 +261,16 @@ python -m agent.scheduler
 Real-time monitoring UI: account value chart, live positions, D-mail viewer, agent execution traces.
 
 ```bash
+# Build frontend
 cd web-ui/frontend && npm install && npm run build && cd ../..
-cd web-ui/backend-py && pip install -r requirements.txt
-uvicorn main:app --host 0.0.0.0 --port 8080
+
+# Install backend dependencies and start server
+cd web-ui/backend-py && pip install -r requirements.txt && uvicorn main:app --host 0.0.0.0 --port 8080
 ```
 
 Open http://localhost:8080
+
+> **Note:** If you get `ModuleNotFoundError: No module named 'fastapi'`, run `pip install -r requirements.txt` first.
 
 ---
 
