@@ -102,9 +102,11 @@ source .venv/bin/activate  # Linux/Mac
 # .venv\Scripts\activate   # Windows
 
 pip install -e .
+pip install claude-agent-sdk
 ```
 
 > **Note**: On Mac/Linux use `python3`. On Windows or inside a virtualenv, `python` works.
+> The `claude-agent-sdk` package is required for the autonomous scheduler mode.
 > All commands below use `python` assuming you're in a virtualenv.
 
 ### Step 2: Create a Wallet
@@ -188,16 +190,28 @@ This sends ~6 transactions to approve Polymarket's exchange contracts to move yo
 
 ### Step 8: Run
 
+**Option A: Autonomous scheduler** (agent runs on its own schedule)
+
 ```bash
 # Single run (scan once, trade if opportunity found, then exit)
-python -m agent.scheduler --once
+PYTHONPATH=. python -m agent.scheduler --once
 
 # Continuous (agent manages its own schedule via hibernate)
-python -m agent.scheduler
+PYTHONPATH=. python -m agent.scheduler
 
 # Or use the shell script
 ./start_agent.sh
 ```
+
+**Option B: Interactive Claude Code session** (recommended for getting started)
+
+Start a Claude Code session and use the MCP tools directly:
+
+```bash
+claude
+```
+
+Then ask Claude to scan for opportunities, check your balance, or place trades. The MCP tools (`find_opportunities`, `get_balance`, `place_order`, etc.) are available in any Claude Code session.
 
 ---
 
@@ -289,6 +303,18 @@ web-ui/          React + FastAPI monitoring dashboard
 
 ## Troubleshooting / FAQ
 
+**Q: `claude mcp add` fails with "unknown option '-m'"**
+
+> **A:** Use `--` to separate Claude CLI options from the Python command: `claude mcp add polymarket -- python -m mcp_server.server`
+
+**Q: `ModuleNotFoundError: No module named 'config'`**
+
+> **A:** Prefix commands with `PYTHONPATH=.` so Python can find local modules: `PYTHONPATH=. python scripts/set_allowances.py`
+
+**Q: `ModuleNotFoundError: No module named 'claude_agent_sdk'`**
+
+> **A:** Install the Claude Agent SDK: `pip install claude-agent-sdk`
+
 **Q: "Transaction failed" or "nonce too low"**
 
 > **A:** This usually means a previous transaction is still pending. Wait a few seconds and retry. The agent handles nonce issues automatically on subsequent runs.
@@ -333,14 +359,14 @@ web-ui/          React + FastAPI monitoring dashboard
 
 ### Setup Checklist
 
-- [ ] **Dependencies** -- Python 3.11+, Claude Code installed and authenticated (`claude login`)
+- [ ] **Dependencies** -- Python 3.11+, Claude Code installed and authenticated (`claude login`), `pip install -e . && pip install claude-agent-sdk`
 - [ ] **Wallet created** -- EOA wallet on Polygon (generate via `eth_account` or use existing)
 - [ ] **Funds deposited** -- POL for gas (~5 POL) + USDC for trading capital, both on **Polygon network**
 - [ ] **User acknowledges risk** -- Private keys grant full control of wallet funds. Trading involves real financial risk. **Confirm with your user that they understand this before writing any keys to `.env`.**
 - [ ] **`.env` configured** -- `POLYGON_WALLET_PRIVATE_KEY` and `EOA_ADDRESS` set
-- [ ] **MCP server registered** -- `claude mcp add polymarket python -m mcp_server.server`
+- [ ] **MCP server registered** -- `claude mcp add polymarket -- python -m mcp_server.server`
 - [ ] **Hooks enabled** -- `cp .claude/settings.local.json.example .claude/settings.local.json`
-- [ ] **Allowances set** -- `python scripts/set_allowances.py` (one-time, requires gas)
+- [ ] **Allowances set** -- `PYTHONPATH=. python scripts/set_allowances.py` (one-time, requires gas)
 
 ---
 
