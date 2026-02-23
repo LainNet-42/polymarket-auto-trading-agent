@@ -2,27 +2,22 @@
   "hooks": {
     "SessionStart": [
       {
-        "type": "command",
-        "command": "python hooks/session_start.py"
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python hooks/session_start.py"
+          }
+        ]
       }
     ],
     "PostToolUse": [
       {
-        "type": "command",
-        "command": "python hooks/post_tool_use.py",
-        "toolNames": [
-          "mcp__polymarket__place_order",
-          "mcp__polymarket__get_balance",
-          "mcp__polymarket__find_opportunities",
-          "mcp__polymarket__get_market_details",
-          "mcp__polymarket__analyze_opportunity",
-          "mcp__polymarket__detect_anomalies",
-          "mcp__polymarket__scan_anomalies",
-          "mcp__polymarket__get_price_history",
-          "mcp__polymarket__search_markets",
-          "mcp__polymarket__hibernate",
-          "mcp__polymarket__get_open_orders",
-          "mcp__polymarket__cancel_order"
+        "matcher": "mcp__polymarket__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python hooks/post_tool_use.py"
+          }
         ]
       }
     ]

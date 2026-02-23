@@ -80,7 +80,12 @@ def read_trace(workspace: Path, invoke_num: int) -> Optional[list[dict]]:
     for date_dir in sorted(trace_dir.iterdir(), reverse=True):
         if not date_dir.is_dir():
             continue
-        trace_file = date_dir / f"invoke_{invoke_num}.jsonl"
+        # Prefer highest retry file (invoke_N_retry2 > retry1 > base)
+        retry_files = sorted(date_dir.glob(f"invoke_{invoke_num}_retry*.jsonl"))
+        if retry_files:
+            trace_file = retry_files[-1]
+        else:
+            trace_file = date_dir / f"invoke_{invoke_num}.jsonl"
         if trace_file.exists():
             messages = []
             with open(trace_file, encoding="utf-8") as f:
