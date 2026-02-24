@@ -34,7 +34,7 @@ The agent maintains a **long-term trading log** across sessions. It remembers wh
 Before open-sourcing, we ran this agent autonomously for 2 weeks: **19 trades, 18 wins (94.7% win rate)**, net profitable, withdrawal verified on-chain. Your wallet, your keys, no Polymarket account needed.
 
 <p align="center">
-  <img src="images/example_webui.png" alt="Dashboard Screenshot" width="900">
+  <img src="images/example_webui_0224.png" alt="Dashboard Screenshot" width="900">
 </p>
 
 **Live**: [Dashboard](https://homosapiens.capital/#/live) | [Wallet on Polygonscan](https://polygonscan.com/address/0xFd0A48d7f4867446a5165AEaB35c42f8B529dBf0)
