@@ -11,6 +11,8 @@
   <a href="https://polymarket.com"><img src="https://img.shields.io/badge/Polymarket-Polygon-7B3FE4.svg?style=for-the-badge" alt="Polymarket"></a>
 </p>
 
+**English** | [**中文简体**](./README-cn.md)
+
 [How It Works](#how-it-works) | [Quick Start](#quick-start) | [Dashboard](#dashboard-optional) | [MCP Tools](#mcp-tools) | [Strategy](#default-strategy) | [Customization](#customization) | [Architecture](#architecture) | [Contributing](#contributing) | [FAQ](#troubleshooting--faq)
 
 ---
